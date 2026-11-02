@@ -9,6 +9,11 @@ test('sums the cart', () => {
   assert.equal(computeTotal({ items: cart, country: 'US' }), 20);
 });
 
+test('adds VAT for the country', () => {
+  assert.equal(computeTotal({ items: cart, country: 'GB' }), 24);
+  assert.equal(computeTotal({ items: cart, country: 'DE' }), 23.8);
+});
+
 test('checkout charges the customer', async () => {
   const result = await checkout({ items: cart, country: 'US' });
   assert.equal(result.status, 'paid');
