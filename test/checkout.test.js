@@ -19,3 +19,8 @@ test('checkout charges the customer', async () => {
   assert.equal(result.status, 'paid');
   assert.match(result.paymentId, /^pay_/);
 });
+
+test('applies coupons before tax', () => {
+  assert.equal(computeTotal({ items: cart, country: 'GB', couponCode: 'SAVE10' }), 21.6);
+  assert.equal(computeTotal({ items: cart, country: 'US', couponCode: 'WELCOME5' }), 15);
+});
