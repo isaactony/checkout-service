@@ -24,3 +24,7 @@ test('applies coupons before tax', () => {
   assert.equal(computeTotal({ items: cart, country: 'GB', couponCode: 'SAVE10' }), 21.6);
   assert.equal(computeTotal({ items: cart, country: 'US', couponCode: 'WELCOME5' }), 15);
 });
+
+test('rejects an empty cart', async () => {
+  await assert.rejects(checkout({ items: [], country: 'US' }), /cart is empty/);
+});

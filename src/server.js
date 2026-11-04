@@ -2,6 +2,7 @@ import http from 'node:http';
 import { randomUUID } from 'node:crypto';
 import { checkout } from './checkout.js';
 import { PaymentError } from './payment.js';
+import { ValidationError } from './cart.js';
 import { log } from './logger.js';
 
 const PORT = Number(process.env.PORT ?? 3000);
@@ -37,6 +38,10 @@ const server = http.createServer(async (req, res) => {
     });
     send(res, 200, { orderId, ...result });
   } catch (err) {
+    if (err instanceof ValidationError) {
+      log('warn', 'checkout_rejected', { orderId, client: order.client ?? 'web', message: err.message, status: 400 });
+      return send(res, 400, { orderId, error: 'invalid_cart', message: err.message });
+    }
     const reason = err instanceof PaymentError ? err.reason : 'internal_error';
     log('error', 'checkout_failed', {
       orderId, client: order.client ?? 'web', country: order.country,
