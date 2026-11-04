@@ -1,6 +1,6 @@
 import { createCharge } from './sandboxProvider.js';
 
-const TIMEOUT_MS = 5000;
+const TIMEOUT_MS = 8000; // provider p99 is ~6s at peak
 
 export class PaymentError extends Error {
   constructor(reason) {
