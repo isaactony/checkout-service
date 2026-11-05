@@ -5,4 +5,6 @@ export const TAX_RATES = {
   DE: 0.19,
   FR: 0.2,
   ZA: 0.15,
+  KE: 0.16,
+  NG: 0.075,
 };
