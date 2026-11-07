@@ -14,6 +14,11 @@ test('adds VAT for the country', () => {
   assert.equal(computeTotal({ items: cart, country: 'DE' }), 23.8);
 });
 
+test('accepts lowercase country codes from mobile clients', () => {
+  assert.equal(computeTotal({ items: cart, country: 'gb' }), 24);
+  assert.equal(computeTotal({ items: cart, country: 'us' }), 20);
+});
+
 test('checkout charges the customer', async () => {
   const result = await checkout({ items: cart, country: 'US' });
   assert.equal(result.status, 'paid');
