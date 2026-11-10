@@ -28,3 +28,17 @@ test('applies coupons before tax', () => {
 test('rejects an empty cart', async () => {
   await assert.rejects(checkout({ items: [], country: 'US' }), /cart is empty/);
 });
+
+test('rejects an unknown coupon code instead of silently charging full price', () => {
+  assert.throws(
+    () => computeTotal({ items: cart, country: 'US', couponCode: 'SAVE01' }),
+    /unknown coupon code/,
+  );
+});
+
+test('checkout rejects an unknown coupon code', async () => {
+  await assert.rejects(
+    checkout({ items: cart, country: 'US', couponCode: 'SAVE01' }),
+    /unknown coupon code/,
+  );
+});
