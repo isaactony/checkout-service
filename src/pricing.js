@@ -9,5 +9,7 @@ const TAX_MULTIPLIER = Object.fromEntries(
 export function computeTotal({ items, country, couponCode }) {
   const subtotal = items.reduce((sum, item) => sum + item.unitPrice * item.quantity, 0);
   const discounted = applyCoupon(subtotal, couponCode);
-  return Math.round(discounted * TAX_MULTIPLIER[country] * 100) / 100;
+  // Mobile clients send lowercase ISO codes ("gb"), web sends "GB".
+  const multiplier = TAX_MULTIPLIER[country.toUpperCase()] ?? 1;
+  return Math.round(discounted * multiplier * 100) / 100;
 }
